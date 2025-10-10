@@ -13,6 +13,14 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
@@ -39,7 +47,7 @@ public class ProjectConfig implements WebMvcConfigurer {
         resolver.setCheckExistence(true);
         return resolver;
     }
-    
+
     @Bean
     public LocaleResolver localeResolver() {
         var slr = new SessionLocaleResolver();
@@ -68,6 +76,21 @@ public class ProjectConfig implements WebMvcConfigurer {
         messageSource.setBasenames("messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
+    }
+
+    @Value("${firebase.json.path}")
+    private String jsonPath;
+
+    @Value("${firebase.json.file}")
+    private String jsonFile;
+
+    @Bean
+    public Storage storage() throws IOException {
+        ClassPathResource resource = new ClassPathResource(jsonPath + File.separator + jsonFile);
+        try (InputStream inputStream = resource.getInputStream()) {
+            GoogleCredentials credentials = GoogleCredentials.fromStream(inputStream);
+            return StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+        }
     }
 
 }
