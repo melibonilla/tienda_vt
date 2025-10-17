@@ -1,7 +1,7 @@
 package com.tienda_vt.service;
 
-import com.tienda_vt.domain.Categoria;
-import com.tienda_vt.repository.CategoriaRepository;
+import com.tienda_vt.domain.Producto;
+import com.tienda_vt.repository.ProductoRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -12,34 +12,34 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class CategoriaService {
+public class ProductoService {
     
 
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private ProductoRepository productoRepository;
 
     @Transactional(readOnly = true)
-    public List<Categoria> getCategorias(boolean activo) {
+    public List<Producto> getProductos(boolean activo) {
         if (activo) {
-            return categoriaRepository.findByActivoTrue();
+            return productoRepository.findByActivoTrue();
         }
-        return categoriaRepository.findAll();
+        return productoRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Optional<Categoria> getCategoria(Integer idCategoria) {
-        return categoriaRepository.findById(idCategoria);
+    public Optional<Producto> getProducto(Integer idProducto) {
+        return productoRepository.findById(idProducto);
     }
 
     @Transactional(readOnly = true)
-    public void eliminar(Integer idCategoria) {
-           //Se verifica que el idCategoria exista
-        if (!categoriaRepository.existsById(idCategoria)) {
+    public void eliminar(Integer idProducto) {
+           //Se verifica que el idProducto exista
+        if (!productoRepository.existsById(idProducto)) {
             //Lanza la excepción...
-            throw new IllegalArgumentException("La categoría " + idCategoria + " no existe");
+            throw new IllegalArgumentException("La categoría " + idProducto + " no existe");
         }
         try {
-            categoriaRepository.deleteById(idCategoria);
+            productoRepository.deleteById(idProducto);
         } catch (DataIntegrityViolationException e) {
             throw new IllegalStateException("No se puede eliminar porque tiene datos asociados " + e);
         }
@@ -48,20 +48,20 @@ public class CategoriaService {
     @Autowired
     private FirebaseStorageService firebaseStorageService;
     
-    //Este método tiene 2 funciones... si idCategoria NO tiene información, entonces se crea un registro (insert)
-    //Si idCateoria tiene info, se actualiza el registro que tiene ese idCategoria
+    //Este método tiene 2 funciones... si idProducto NO tiene información, entonces se crea un registro (insert)
+    //Si idCateoria tiene info, se actualiza el registro que tiene ese idProducto
     @Transactional
-    public void save(Categoria categoria, MultipartFile imageFile) {
-    categoria = categoriaRepository.save(categoria);
+    public void save(Producto producto, MultipartFile imageFile) {
+    producto = productoRepository.save(producto);
 
     // Evitar NullPointerException
     if (imageFile != null && !imageFile.isEmpty()) {
         try {
             String rutaImagen = firebaseStorageService.uploadImage(
-                imageFile, "categoria", categoria.getIdCategoria()
+                imageFile, "producto", producto.getIdProducto()
             );
-            categoria.setRutaImagen(rutaImagen);
-            categoriaRepository.save(categoria);
+            producto.setRutaImagen(rutaImagen);
+            productoRepository.save(producto);
         } catch (IOException e) {
             e.printStackTrace(); // opcional, para debug
         }

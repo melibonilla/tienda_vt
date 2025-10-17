@@ -60,7 +60,7 @@ public class FirebaseStorageService {
     //Sube el archivo al almacenamiento de Firebase y genera una URL firmada.     
     private String uploadToFirebase(File file, String folder, String fileName) throws IOException {
         // Definimos el ID del blob y su información
-        BlobId blobId = BlobId.of(bucketName, storagePath + "/" + folder + "/" + fileName);
+        BlobId blobId = BlobId.of(bucketName, storagePath +  folder + "/" + fileName);
         String mimeType = Files.probeContentType(file.toPath());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(mimeType != null ? mimeType : "media").build();
 
