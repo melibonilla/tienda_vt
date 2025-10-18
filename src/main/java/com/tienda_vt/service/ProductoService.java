@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductoService {
-    
 
     @Autowired
     private ProductoRepository productoRepository;
@@ -33,7 +32,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public void eliminar(Integer idProducto) {
-           //Se verifica que el idProducto exista
+        //Se verifica que el idProducto exista
         if (!productoRepository.existsById(idProducto)) {
             //Lanza la excepción...
             throw new IllegalArgumentException("La categoría " + idProducto + " no existe");
@@ -44,32 +43,31 @@ public class ProductoService {
             throw new IllegalStateException("No se puede eliminar porque tiene datos asociados " + e);
         }
     }
-  
+
     @Autowired
     private FirebaseStorageService firebaseStorageService;
-    
+
     //Este método tiene 2 funciones... si idProducto NO tiene información, entonces se crea un registro (insert)
     //Si idCateoria tiene info, se actualiza el registro que tiene ese idProducto
     @Transactional
     public void save(Producto producto, MultipartFile imageFile) {
-    producto = productoRepository.save(producto);
+        producto = productoRepository.save(producto);
 
-    // Evitar NullPointerException
-    if (imageFile != null && !imageFile.isEmpty()) {
-        try {
-            String rutaImagen = firebaseStorageService.uploadImage(
-                imageFile, "producto", producto.getIdProducto()
-            );
-            producto.setRutaImagen(rutaImagen);
-            productoRepository.save(producto);
-        } catch (IOException e) {
-            e.printStackTrace(); // opcional, para debug
+        // Evitar NullPointerException
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                 System.out.println("Voy a guardar");
+                String rutaImagen = firebaseStorageService.uploadImage(
+                        imageFile, "producto", producto.getIdProducto()
+                );
+                producto.setRutaImagen(rutaImagen);
+                productoRepository.save(producto);
+            } catch (IOException e) {
+                System.out.println("Hubo un error");
+                e.printStackTrace(); // opcional, para debug
+            }
         }
     }
-}
 
-
-    public void addFlashAttribute(String todoOk, String message) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  
 }

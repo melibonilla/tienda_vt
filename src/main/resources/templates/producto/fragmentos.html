@@ -4,10 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
     <head th:replace="~{general/plantilla :: head}"> </head>
-
     <body>
-
-
         <section th:fragment="agregar">
             <div class="row py-4 mb-2 bg-light">
                 <div class="col-md-1"></div>
@@ -38,7 +35,7 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label>[[#{producto.categoria}]]</label>
-                                    <select name="idCategoria" class="form-select" aria-label="Default select example">
+                                    <select name="categoria.idCategoria" class="form-select" aria-label="Default select example">
 
                                         <option th:each="c : ${categorias}"
                                                 th:value="${c.idCategoria}">[[${c.descripcion}]]</option>                                     
@@ -70,7 +67,7 @@
 
                                 <div class="mb-3">
                                     <label>[[#{producto.imagen}]]</label>
-                                    <input type="file" name="imagenFile" class="form-control"
+                                    <input type="file" name="imageFile" class="form-control"
                                            onchange="mostrarImagen(this);"/>
                                     <img id="blah" src="#" alt="imagen" height="200"/>
                                 </div>
@@ -125,7 +122,7 @@
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label>[[#{producto.categoria}]]</label>
-                                                <select name="idCategoria" th:field="*{idCategoria}" class="form-select" aria-label="Default select example">
+                                                <select name="categoria.idCategoria" th:field="*{categoria.idCategoria}" class="form-select" aria-label="Default select example">
 
                                                     <option th:each="c : ${categorias}"
                                                             th:value="${c.idCategoria}">[[${c.descripcion}]]</option>                                     
@@ -208,8 +205,6 @@
                 </div>
             </div>
         </section>
-
-
         <section th:fragment="listado" class="p-3">
             <div class="row p-3">
                 <div class="col-md-9">
@@ -239,7 +234,7 @@
                                             <td class="text-end">[[${#numbers.formatCurrency(c.precio)}]]</td>
                                             <td class="text-center">[[${c.existencias}]]</td>
                                             <td class="text-end">[[${c.precio*c.existencias}]]</td>
-                                            <td>[[${c.idCategoria}]]</td>
+                                            <td>[[${c.categoria.descripcion}]]</td>
                                             <td><img th:src="@{${c.rutaImagen}}" alt="noData" height="75"/></td>
                                             <td th:text="${c.activo} ? 'Activa' : 'Inactiva'"></td>
                                             <td>
@@ -269,7 +264,6 @@
                 </div>
             </div>
         </section>
-
 
         <section th:fragment="mostrarToast">
             <div aria-live="polite" aria-atomic="true"

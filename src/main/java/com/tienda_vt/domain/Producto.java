@@ -23,7 +23,7 @@ public class Producto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProducto;  
-    private Integer idCategoria;
+    //private Integer idCategoria;
     
     @Column (unique=true, nullable=false, length=50)
     @NotNull
@@ -45,5 +45,9 @@ public class Producto implements Serializable {
     @Size (max=1024)
     private String rutaImagen;
     private boolean activo;
+    
+    @ManyToOne
+    @JoinColumn(name="id_categoria")
+    private Categoria categoria;
     
 }

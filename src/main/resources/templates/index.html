@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <!-- Esto es un comentario...  -->
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.3w.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-
-    <head th:replace="~{general/fragmentos :: head}">
-        <title>TechShop</title>
-        <meta charset="UTF-8"/>
-    </head>
-    <body> 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springssecurity6">
+    <head th:replace="~{general/fragmentos :: head}"/>
+    <body>
         <header th:replace="~{general/fragmentos :: header}"/>
-            
+
+        <section th:replace="~{consultas/fragmentos :: tabs}"/>
+
+        <section th:replace="~{consultas/fragmentos :: tarjetas}"/>
+
+
         <footer th:replace="~{general/fragmentos :: footer}"/>
-            
-        
     </body>
 </html>

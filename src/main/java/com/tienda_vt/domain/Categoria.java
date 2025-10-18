@@ -5,6 +5,7 @@
 package com.tienda_vt.domain;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 //import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -33,5 +34,10 @@ public class Categoria implements Serializable {
     //@Size (max=1024)
     private String rutaImagen;
     private boolean activo;
+    
+    @OneToMany(mappedBy="categoria")
+    private List<Producto> productos;
+    
+    
     
 }
