@@ -13,6 +13,7 @@ import lombok.Data;
  *
  * @author melissa
  */
+
 @Data
 @Entity
 @Table (name ="categoria")

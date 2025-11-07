@@ -4,6 +4,7 @@ import com.tienda_vt.domain.Producto;
 import com.tienda_vt.repository.ProductoRepository;
 import java.io.IOException;
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -69,5 +70,21 @@ public class ProductoService {
         }
     }
 
-  
+   @Transactional(readOnly = true)
+    public List<Producto> consultaDerivada(BigDecimal precioInf, BigDecimal precioSup) {
+        
+            return productoRepository.findByPrecioBetweenOrderByPrecioAsc(precioInf, precioSup);       
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Producto> consultaJPQL(BigDecimal precioInf, BigDecimal precioSup) {
+        
+            return productoRepository.consultaJPQL(precioInf, precioSup);       
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup) {
+        
+            return productoRepository.consultaSQL(precioInf, precioSup);       
+    }
 }

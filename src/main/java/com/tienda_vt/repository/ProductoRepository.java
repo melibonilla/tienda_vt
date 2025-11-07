@@ -5,8 +5,10 @@
 package com.tienda_vt.repository;
 
 import com.tienda_vt.domain.Producto;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +17,19 @@ import org.springframework.stereotype.Repository;
  */
 @Repository 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
-    
+
     public List<Producto> findByActivoTrue();
+
+    public List<Producto> findByPrecioBetweenOrderByPrecioAsc(BigDecimal precioInf, BigDecimal precioSup);
+
+    // JPQL corregido
+    @Query("SELECT p FROM Producto p WHERE p.precio BETWEEN :precioInf AND :precioSup ORDER BY p.precio ASC")
+    public List<Producto> consultaJPQL(BigDecimal precioInf, BigDecimal precioSup);
+
+    // SQL nativo corregido
+    @Query(
+        nativeQuery = true,
+        value = "SELECT * FROM producto WHERE precio BETWEEN :precioInf AND :precioSup ORDER BY precio ASC"
+    )
+    public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup);
 }
