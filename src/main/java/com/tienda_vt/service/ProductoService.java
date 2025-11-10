@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
 
 @Service
 public class ProductoService {
@@ -57,7 +58,7 @@ public class ProductoService {
         // Evitar NullPointerException
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                 System.out.println("Voy a guardar");
+                System.out.println("Voy a guardar");
                 String rutaImagen = firebaseStorageService.uploadImage(
                         imageFile, "producto", producto.getIdProducto()
                 );
@@ -70,21 +71,29 @@ public class ProductoService {
         }
     }
 
-   @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<Producto> consultaDerivada(BigDecimal precioInf, BigDecimal precioSup) {
-        
-            return productoRepository.findByPrecioBetweenOrderByPrecioAsc(precioInf, precioSup);       
+
+        return productoRepository.findByPrecioBetweenOrderByPrecioAsc(precioInf, precioSup);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Producto> consultaJPQL(BigDecimal precioInf, BigDecimal precioSup) {
-        
-            return productoRepository.consultaJPQL(precioInf, precioSup);       
+
+        return productoRepository.consultaJPQL(precioInf, precioSup);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup) {
-        
-            return productoRepository.consultaSQL(precioInf, precioSup);       
+
+        return productoRepository.consultaSQL(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaAmpliada() {
+        var lista = new ArrayList<Producto>();
+        lista.add(productoRepository.findFirstByOrderByPrecioAsc());  // Min
+        lista.add(productoRepository.findFirstByOrderByPrecioDesc()); // Max
+        return lista;
     }
 }

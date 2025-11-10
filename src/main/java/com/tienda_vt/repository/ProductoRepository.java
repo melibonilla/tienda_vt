@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author melissa
  */
-@Repository 
+@Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     public List<Producto> findByActivoTrue();
@@ -28,8 +28,15 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     // SQL nativo corregido
     @Query(
-        nativeQuery = true,
-        value = "SELECT * FROM producto WHERE precio BETWEEN :precioInf AND :precioSup ORDER BY precio ASC"
+            nativeQuery = true,
+            value = "SELECT * FROM producto WHERE precio BETWEEN :precioInf AND :precioSup ORDER BY precio ASC"
     )
     public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup);
+
+    //TAREA 2
+// Producto con precio mínimo (consulta derivada)
+    public Producto findFirstByOrderByPrecioAsc();
+
+// Producto con precio máximo (consulta derivada)
+    public Producto findFirstByOrderByPrecioDesc();
 }
