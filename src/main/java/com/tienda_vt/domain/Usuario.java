@@ -2,6 +2,7 @@ package com.tienda_vt.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
 
@@ -31,5 +32,5 @@ public class Usuario implements Serializable {
     joinColumns = @JoinColumn(name = "id_usuario"),
     inverseJoinColumns = @JoinColumn(name = "id_rol")
 )
-private Set<Rol> roles;
+private Set<Rol> roles = new HashSet <> ();
 }
