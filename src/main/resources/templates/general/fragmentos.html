@@ -10,10 +10,13 @@
         <script th:src="@{/js/rutinas.js}"></script>
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>        
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>        
     </head>
     <body>
-        <header th:fragment="header" class="header">
+        <header th:fragment="header" class="header d-print-none">
             <nav class="navbar navbar-expand-sm p-0">
                 <div class="container">                    
                     <a th:href="@{/}" class="navbar-brand">[[#{aplicacion.titulo}]]</a>
@@ -67,7 +70,7 @@
                         </ul>
                         <div id="resultBlock">
                         </div>
-                                         
+
                         <ul class="navbar-nav" sec:authorize='!isAuthenticated()'>
                             <li class='nav-item my-auto'>
                                 <a class='nav-link' th:href='@{/login}'>
@@ -76,7 +79,7 @@
                                 </a>
                             </li>
                         </ul>
-                        
+
                         <ul class="navbar-nav" sec:authorize='isAuthenticated()'>
                             <li class='nav-item my-auto'>
                                 <a class='nav-link'>
@@ -85,17 +88,17 @@
                                     <span sec:authentication="name" class='ms-1'>user</span>
                                 </a>
                             </li>
-                             <li class='nav-item my-auto'>
-                                 <form method="post" th:action="@{/logout}">
-                                     <button class="btn nav-link" type="submit">
-                                         <li class='fas fa-sign-out-alt'> </li>
-                                             <span class='ms-1'>Logout</span>
-                                        
-                                     </button>
-                                 </form>
+                            <li class='nav-item my-auto'>
+                                <form method="post" th:action="@{/logout}">
+                                    <button class="btn nav-link" type="submit">
+                                        <li class='fas fa-sign-out-alt'> </li>
+                                        <span class='ms-1'>Logout</span>
+
+                                    </button>
+                                </form>
                             </li>
                         </ul>
-                        
+
                     </div>
                 </div>
             </nav>
@@ -110,7 +113,7 @@
             </section>
         </header>
 
-        <footer th:fragment="footer" class="p-2 mt-5 bg-info text-white">
+        <footer th:fragment="footer" class="p-2 mt-5 bg-info text-white d-print-none">
             <p class="lead text-center">[[#{plantilla.derechos}]] &COPY;</p>
         </footer>
         <section th:fragment="mostrarToast">
